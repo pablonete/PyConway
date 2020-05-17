@@ -1,4 +1,5 @@
 import pygame
+import numpy
 
 pygame.init()
 
@@ -12,6 +13,11 @@ screen.fill(bg)
 nxC, nyC = 25, 25
 dimCW = width / nxC   # Ancho de casilla
 dimCH = height / nyC  # Alto de casilla
+
+gameState = numpy.zeros((nxC, nyC))
+gameState[5, 3] = 1
+gameState[5, 4] = 1
+gameState[5, 5] = 1
 
 run = True
 while run:
@@ -29,6 +35,9 @@ while run:
               (posX + dimCW, posY + dimCH),
               (posX,         posY + dimCH)]
 
-      pygame.draw.polygon(screen, ln, poly, 1)
+      if gameState[x, y] == 1:
+        pygame.draw.polygon(screen, ln, poly, 0)
+      else:
+        pygame.draw.polygon(screen, ln, poly, 1)
 
   pygame.display.flip()
