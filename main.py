@@ -9,8 +9,9 @@ screen = pygame.display.set_mode((height, width))
 
 bg = 135, 182, 189
 ln = 255, 255, 25
-vc = 253, 145, 141
-screen.fill(bg)
+vc = 178, 117, 226
+font = pygame.font.Font(None, 32)
+fc = 25, 25, 25
 
 nxC, nyC = 25, 25
 dimCW = width / nxC   # Ancho de casilla
@@ -29,12 +30,16 @@ gameState[21, 23] = 1
 gameState[20, 23] = 1
 
 run = True
+max_alive = 0
+day = 0
 while run:
   for event in pygame.event.get():
     if event.type == pygame.QUIT:
       run = False
 
   newGameState = numpy.copy(gameState)
+  alive = 0
+  day += 1
   for y in range(0, nxC):
     for x in range(0, nyC):
       ax = (x - 1) % nxC
@@ -67,10 +72,18 @@ while run:
 
       if gameState[x, y] == 1:
         pygame.draw.polygon(screen, vc, poly, 0)
+        alive += 1
       else:
         pygame.draw.polygon(screen, bg, poly, 0)
       pygame.draw.polygon(screen, ln, poly, 2)
 
+  if max_alive < alive:
+    max_alive = alive
+
+  screen.blit(font.render("PyConway", 0, fc), (20, 15))
+  screen.blit(font.render("Vivos: {} (max {})".format(alive, max_alive), 0, fc), (20, dimCW + 15))
+  screen.blit(font.render("Día: {}".format(day), 0, fc), (20, dimCW * 2 + 15))
+
   gameState = newGameState
   pygame.display.flip()
-  time.sleep(0.3)
+  time.sleep(0.1)
