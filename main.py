@@ -13,7 +13,12 @@ nxC, nyC = 25, 25
 dimCW = width / nxC   # Ancho de casilla
 dimCH = height / nyC  # Alto de casilla
 
-while True:
+run = True
+while run:
+  for event in pygame.event.get():
+    if event.type == pygame.QUIT:
+      run = False
+
   for y in range(0, nxC):
     for x in range(0, nyC):
       posX = x * dimCW
