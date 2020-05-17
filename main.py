@@ -14,8 +14,8 @@ font = pygame.font.Font(None, 32)
 fc = 25, 25, 25
 
 nxC, nyC = 25, 25
-dimCW = width / nxC   # Ancho de casilla
-dimCH = height / nyC  # Alto de casilla
+dimCW = int(width / nxC)   # Ancho de casilla
+dimCH = int(height / nyC)  # Alto de casilla
 
 gameState = numpy.zeros((nxC, nyC))
 # Stick
@@ -36,6 +36,12 @@ while run:
   for event in pygame.event.get():
     if event.type == pygame.QUIT:
       run = False
+
+  mousePressed = pygame.mouse.get_pressed()
+  if sum(mousePressed) > 0:
+    posX, posY = pygame.mouse.get_pos()
+    pressX, pressY = int(posX / dimCW), int(posY / dimCH)
+    gameState[pressX, pressY] = not mousePressed[2]
 
   newGameState = numpy.copy(gameState)
   alive = 0
@@ -86,4 +92,4 @@ while run:
 
   gameState = newGameState
   pygame.display.flip()
-  time.sleep(0.1)
+  time.sleep(0.3)
